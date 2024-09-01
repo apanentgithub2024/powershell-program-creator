@@ -1,5 +1,5 @@
 // UI
-const button1 = document.getElementById("windowDisplaysCategory"), button2 = document.getElementById("programCategory"), category1 = document.getElementById("windowDisplays"), category2 = document.getElementById("program")
+const button1 = document.getElementById("windowDisplayCategory"), button2 = document.getElementById("programCategory"), category1 = document.getElementById("windowDisplay"), category2 = document.getElementById("program")
 category2.style.display = "none"
 button1.disabled = true
 button1.onclick = function() {
