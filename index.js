@@ -130,7 +130,9 @@ newCode.onclick = function() {
 						input = {value: null}
 				}
 				if (input.value !== null) {
-					input.value = blockToMimic.arguments[multiple].defaultValue
+					if (input.tagName.toLowerCase() !== "select") {
+						input.value = blockToMimic.arguments[multiple].defaultValue
+					}
 				}
 			} else {
 				const text = document.createElement("span")
