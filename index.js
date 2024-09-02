@@ -144,5 +144,6 @@ newCode.onclick = function() {
 		})
 		sel.remove()
 		newCode.disabled = false
+		category2.appendChild(block)
 	}
 }
