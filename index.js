@@ -84,7 +84,7 @@ newCode.onclick = function() {
 		const matches = blockToMimic.text.replace(/[\w\s]+|<([\w\s]+)>/gi, function(match, multiple) {
 			let input
 			if (multiple) {
-				switch (blockToMimick.arguments[multiple].type) {
+				switch (blockToMimic.arguments[multiple].type) {
 					case "string":
 						const inp = document.createElement("input")
 						block.appendChild(inp)
@@ -109,11 +109,11 @@ newCode.onclick = function() {
 						break
 					case "dropdown":
 						const inp = document.createElement("select")
-						const keys = Object.keys(blockToMimick.arguments[multiple].items)
+						const keys = Object.keys(blockToMimic.arguments[multiple].items)
 						for (const option of keys) {
 							const op = document.createElement("option")
 							op.textContent = option
-							op.value = blockToMimick.arguments[multiple].items[option]
+							op.value = blockToMimic.arguments[multiple].items[option]
 							inp.appendChild(op)
 						}
 						block.appendChild(inp)
