@@ -129,6 +129,9 @@ newCode.onclick = function() {
 						block.appendChild(inp)
 						input = {value: null}
 				}
+				if (input.value !== null) {
+					input.value = blockToMimic.arguments[multiple].defaultValue
+				}
 			} else {
 				const text = document.createElement("span")
 				text.textContent = match
