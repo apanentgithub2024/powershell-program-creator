@@ -236,6 +236,10 @@ const piecesBehavior = {
 	messageBox: function(args) {
 		requestAssembly("System.Windows.Forms")
 		return `[System.Windows.Forms.MessageBox]::Show("${filterString(args.B)}", "${filterString(args.A)}", '${args.C}', '${args.D}')\n`
+	},
+	messageBoxResult: function(args) {
+		requestAssembly("System.Windows.Forms")
+		return `$${args.E} = [System.Windows.Forms.MessageBox]::Show("${filterString(args.B)}", "${filterString(args.A)}", '${args.C}', '${args.D}')\n`
 	}
 }
 function compile(code) {
