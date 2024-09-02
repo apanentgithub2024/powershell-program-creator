@@ -151,6 +151,13 @@ newCode.onclick = function() {
 		})
 		sel.remove()
 		newCode.disabled = false
+		const removeBlock = document.createElement("button")
+		block.appendChild(removeBlock)
+		removeBlock.onclick = function() {
+			currentCode.splice(indexToEdit, 1)
+			block.remove()
+		}
+		removeBlock.textContent = "X"
 		category2.appendChild(block)
 	}
 }
