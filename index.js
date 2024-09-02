@@ -25,11 +25,13 @@ const newWindowButton = document.createElement("button"), newCode = document.cre
 		arguments: {
 			A: {
 				type: "string",
-				defaultValue: "Greeting"
+				defaultValue: "Greeting",
+				canAddBlocks: true
 			},
 			B: {
 				type: "string",
-				defaultValue: "Hello, world!"
+				defaultValue: "Hello, world!",
+				canAddBlocks: true
 			},
 			C: {
 				type: "dropdown",
@@ -125,7 +127,7 @@ newCode.onclick = function() {
 						break
 					default:
 						inp = document.createElement("div")
-						inp.style = "background-color: AAAAAA; border-radius: 6px; display: inline"
+						inp.style = "background-color: AAAAAA; border-radius: 6px; display: inline; width: 40px; height: 10px"
 						block.appendChild(inp)
 						input = {value: null}
 				}
