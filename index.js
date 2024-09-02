@@ -47,10 +47,10 @@ const newWindowButton = document.createElement("button"), newCode = document.cre
 				type: "dropdown",
 				defaultValue: "Information",
 				items: {
-					"Warning": "Warn",
-					"Information": "Info",
+					"Warning": "Warning",
+					"Information": "Information",
 					"Error": "Error",
-					"Question": "Request"
+					"Question": "QUestion"
 				}
 			}
 		}
@@ -113,6 +113,12 @@ newCode.onclick = function() {
 						block.appendChild(inp)
 						input = inp
 						break
+					case "checkmark":
+						inp = document.createElement("input")
+						inp.type = "checkbox"
+						block.appendChild(inp)
+						input = inp
+						break
 					case "dropdown":
 						inp = document.createElement("select")
 						const keys = Object.keys(blockToMimic.arguments[multiple].items)
@@ -160,4 +166,36 @@ newCode.onclick = function() {
 		removeBlock.textContent = "X"
 		category2.appendChild(block)
 	}
+}
+const assemblies = new Set([])
+function requestAssembly(assembly) {
+	assemblies.add("Add-Type -AssemblyName " + assembly)
+}
+function filterString(str) {
+	return str.replace(/\\|"/g, "\\$&")
+}
+const piecesBehavior = {
+	messageBox: function(args) {
+		requestAssembly("System.Windows.Forms")
+		return `[System.Windows.Forms.MessageBox]::Show("${filterString(args.B)}", "${filterString(args.A)}", '${args.C}', '${args.D}')\n`
+	}
+}
+function compile(code) {
+	let result = ""
+	for (const block of code) {
+		result += piecesBehavior[block.opcode](block.arguments)
+	}
+	let assemb = "", assembli = Array.from(assemblies)
+	for (const e of assembli) {
+		assemb += e + "\n"
+	}
+	return assemb + result
+}
+const expor = document.createElement("button")
+const currentCo = document.createElement("pre")
+document.body.appendChild(expor)
+document.body.appendChild(currentCo)
+expor.textContent = "Export"
+expor.onclick = function() {
+	currentCo.textContent = compile(currentCode)
 }
