@@ -41,7 +41,8 @@ const newWindowButton = document.createElement("button"), newCode = document.cre
 					"OK": "OK",
 					"OK/Cancel": "OKCancel",
 					"Yes/No/Cancel": "YesNoCancel"
-				}
+				},
+				canAddBlocks: false
 			},
 			D: {
 				type: "dropdown",
@@ -50,8 +51,60 @@ const newWindowButton = document.createElement("button"), newCode = document.cre
 					"Warning": "Warning",
 					"Information": "Information",
 					"Error": "Error",
-					"Question": "QUestion"
-				}
+					"Question": "Question"
+				},
+				canAddBlocks: false
+			}
+		}
+	},
+	{
+		opcode: "messageBoxResult",
+		type: 1,
+		text: "store choice selected from (box with title <A> text <B> options <C> icon <D>) in <E>",
+		displayAs: "store message choice result in variable",
+		isHidden: false,
+		arguments: {
+			A: {
+				type: "string",
+				defaultValue: "Greeting",
+				canAddBlocks: true
+			},
+			B: {
+				type: "string",
+				defaultValue: "Hello, world!",
+				canAddBlocks: true
+			},
+			C: {
+				type: "dropdown",
+				defaultValue: "Yes/No",
+				items: {
+					"Yes/No": "YesNo",
+					"OK": "OK",
+					"OK/Cancel": "OKCancel",
+					"Yes/No/Cancel": "YesNoCancel"
+				},
+				canAddBlocks: false
+			},
+			D: {
+				type: "dropdown",
+				defaultValue: "Information",
+				items: {
+					"Warning": "Warning",
+					"Information": "Information",
+					"Error": "Error",
+					"Question": "Question"
+				},
+				canAddBlocks: false
+			},
+			E: {
+				type: "string",
+				defaultValue: "lastSelectedChoice",
+				verifyFunction: function(val) {
+					const defVals = ["true", "false", "PSScriptRoot", "null", "Error", "HOME", "PID", "args", "PSVersionTable", "PROFILE", "PSCommandPath", "PWD", "OFS", "LastExitCode", "Home", "ExecutionContext"]
+					const value = defVals.includes(val) ? val + "2" : val
+					return value.replace(/(^[^a-zA-Z_])|[^a-zA-Z0-9_]/g, "")
+				},
+				canAddBlocks: false
 			}
 		}
 	}
@@ -94,6 +147,11 @@ newCode.onclick = function() {
 					case "string":
 						inp = document.createElement("input")
 						block.appendChild(inp)
+						if (blockToMimic.arguments[multiple].verifyFunction) {
+							inp.addEventListener("input", () => {
+								inp.value = blockToMimic.arguments[multiple].verifyFunction(inp.value)
+							})
+						}
 						input = inp
 						break
 					case "multistring":
@@ -172,7 +230,7 @@ function requestAssembly(assembly) {
 	assemblies.add("Add-Type -AssemblyName " + assembly)
 }
 function filterString(str) {
-	return str.replace(/\\|"/g, "\\$&")
+	return str.replace(/[\\"$]/g, "\\$&")
 }
 const piecesBehavior = {
 	messageBox: function(args) {
@@ -189,6 +247,7 @@ function compile(code) {
 	for (const e of assembli) {
 		assemb += e + "\n"
 	}
+	assemblies.clear()
 	return assemb + result
 }
 const expor = document.createElement("button")
