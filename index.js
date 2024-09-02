@@ -63,6 +63,9 @@ newCode.onclick = function() {
 	newCode.disabled = true
 	const sel = document.createElement("select")
 	category2.appendChild(sel)
+	const opuf = document.createElement("option")
+	option.appendChild(opuf)
+	opuf.textContent = "[select a block]"
 	for (const block of pieces) {
 		if (!block.isHidden) {
 			const option = document.createElement("option")
