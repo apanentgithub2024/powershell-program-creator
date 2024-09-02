@@ -126,13 +126,16 @@ newCode.onclick = function() {
 						input = {value: null}
 				}
 			} else {
-				const text = document.createElement("a")
+				const text = document.createElement("span")
 				text.textContent = match
 				block.appendChild(text)
 				input = null
 			}
 			if (input !== null) {
 				currentCode[indexToEdit].arguments[multiple] = input.value
+				input.addEventListener("input", () => {
+					currentCode[indexToEdit].arguments[multiple] = input.value
+				})
 			}
 		})
 		sel.remove()
