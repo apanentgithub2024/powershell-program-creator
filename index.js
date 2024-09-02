@@ -64,7 +64,7 @@ newCode.onclick = function() {
 	const sel = document.createElement("select")
 	category2.appendChild(sel)
 	const opuf = document.createElement("option")
-	option.appendChild(opuf)
+	opuf.appendChild(opuf)
 	opuf.textContent = "[select a block]"
 	for (const block of pieces) {
 		if (!block.isHidden) {
