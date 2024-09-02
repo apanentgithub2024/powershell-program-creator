@@ -114,7 +114,7 @@ category2.appendChild(newCode)
 newWindowButton.textContent = "New Window Display"
 newCode.textContent = "Add New Code Piece"
 let currentCode = []
-newCode.onclick = function() {
+function addNewBlock() {
 	newCode.disabled = true
 	const sel = document.createElement("select")
 	category2.appendChild(sel)
@@ -139,7 +139,7 @@ newCode.onclick = function() {
 			}
 		)
 		const indexToEdit = currentCode.length - 1
-		const matches = blockToMimic.text.replace(/[\w\s]+|<([\w\s]+)>/gi, function(match, multiple) {
+		const matches = blockToMimic.text.replace(/[\w\s\(\)]+|<([\w\s]+)>/gi, function(match, multiple) {
 			let input
 			if (multiple) {
 				let inp
@@ -225,6 +225,7 @@ newCode.onclick = function() {
 		category2.appendChild(block)
 	}
 }
+newCode.onclick = () => addNewBlock()
 const assemblies = new Set([])
 function requestAssembly(assembly) {
 	assemblies.add("Add-Type -AssemblyName " + assembly)
