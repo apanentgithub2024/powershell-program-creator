@@ -292,7 +292,7 @@ const piecesBehavior = {
 	},
 	end: function() {
 		indentation -= 2
-		return "}"
+		return {result: "}\n", indentOffset: -2}
 	}
 }
 function compile(code) {
@@ -300,7 +300,13 @@ function compile(code) {
 	vars = {}
 	let result = ""
 	for (const block of code) {
-		result += " ".repeat(indentation) + piecesBehavior[block.opcode](block.arguments)
+		const indenta = indentation
+		const res = piecesBehavior[block.opcode](block.arguments)
+		if (typeof res == "string") {
+			result += " ".repeat(indenta) + res
+		} else {
+			result += " ".repeat(indenta + res.indentOffset) + res.result
+		}
 	}
 	let assemb = "", assembli = Array.from(assemblies)
 	for (const e of assembli) {
