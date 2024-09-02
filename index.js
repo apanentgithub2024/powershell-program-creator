@@ -268,7 +268,7 @@ function requestAssembly(assembly) {
 	assemblies.add("Add-Type -AssemblyName " + assembly)
 }
 function filterString(str) {
-	return str.replace(/[\\"$]/g, "\\$&")
+	return str.replace(/[`"$]/g, "`$&")
 }
 let vars = {}
 let indentation = 0
