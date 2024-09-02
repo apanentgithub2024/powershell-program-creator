@@ -270,7 +270,7 @@ function requestAssembly(assembly) {
 function filterString(str) {
 	return str.replace(/[\\"$]/g, "\\$&")
 }
-const vars = {}
+let vars = {}
 let indentation = 0
 const piecesBehavior = {
 	messageBox: function(args) {
@@ -279,11 +279,15 @@ const piecesBehavior = {
 	},
 	messageBoxResult: function(args) {
 		requestAssembly("System.Windows.Forms")
-		vars[args.E] = "msgB"
+		vars[args.E] = 0
 		return `$${args.E} = [System.Windows.Forms.MessageBox]::Show("${filterString(args.B)}", "${filterString(args.A)}", '${args.C}', '${args.D}')\n`
 	},
 	"if0": function(args) {
 		indentation += 2
+		if (vars[args.E] !== 0) {
+			alert("The variable you used must be assigned a value from the choice!")
+			return `if ($false) {\n`
+		}
 		return `if ($${args.A}${args.B}) {\n`
 	},
 	end: function() {
