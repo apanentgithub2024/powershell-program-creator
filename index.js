@@ -107,6 +107,43 @@ const newWindowButton = document.createElement("button"), newCode = document.cre
 				canAddBlocks: false
 			}
 		}
+	},
+	{
+		opcode: "if0",
+		type: 1,
+		text: "if choice from message box (<A>) is <B>",
+		displayAs: "if choice selected is",
+		isHidden: false,
+		arguments: {
+			A: {
+				type: "string",
+				defaultValue: "lastSelectedChoice",
+				verifyFunction: function(val) {
+					const defVals = ["true", "false", "PSScriptRoot", "null", "Error", "HOME", "PID", "args", "PSVersionTable", "PROFILE", "PSCommandPath", "PWD", "OFS", "LastExitCode", "Home", "ExecutionContext"]
+					const value = defVals.includes(val) ? val + "2" : val
+					return value.replace(/(^[^a-zA-Z_])|[^a-zA-Z0-9_]/g, "")
+				},
+				canAddBlocks: false
+			},
+			B: {
+				type: "dropdown",
+				defaultValue: "OK",
+				items: {
+					OK: ' -eq "OK"',
+					Selected: ' -ne $null',
+					Yes: ' -eq "Yes"',
+					No: ' -eq "No"'
+				},
+				canAddBlocks: true
+			}
+		}
+	},
+	{
+		opcode: "end",
+		type: 1,
+		text: "end",
+		displayAs: "end branch",
+		isHidden: false
 	}
 ]
 category1.appendChild(newWindowButton)
@@ -233,6 +270,8 @@ function requestAssembly(assembly) {
 function filterString(str) {
 	return str.replace(/[\\"$]/g, "\\$&")
 }
+const vars = {}
+let indentation = 0
 const piecesBehavior = {
 	messageBox: function(args) {
 		requestAssembly("System.Windows.Forms")
@@ -240,13 +279,22 @@ const piecesBehavior = {
 	},
 	messageBoxResult: function(args) {
 		requestAssembly("System.Windows.Forms")
+		vars[args.E] = "msgB"
 		return `$${args.E} = [System.Windows.Forms.MessageBox]::Show("${filterString(args.B)}", "${filterString(args.A)}", '${args.C}', '${args.D}')\n`
+	},
+	"if0": function(args) {
+		indentation += 2
+		return `if ($${args.A}${args.B}) {\n`
+	},
+	end: function() {
+		indentation -= 2
+		return "}"
 	}
 }
 function compile(code) {
 	let result = ""
 	for (const block of code) {
-		result += piecesBehavior[block.opcode](block.arguments)
+		result += " ".repeat(indentation) + piecesBehavior[block.opcode](block.arguments)
 	}
 	let assemb = "", assembli = Array.from(assemblies)
 	for (const e of assembli) {
