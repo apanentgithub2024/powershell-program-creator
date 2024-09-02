@@ -297,6 +297,7 @@ const piecesBehavior = {
 }
 function compile(code) {
 	indentation = 0
+	vars = {}
 	let result = ""
 	for (const block of code) {
 		result += " ".repeat(indentation) + piecesBehavior[block.opcode](block.arguments)
