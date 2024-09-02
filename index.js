@@ -74,6 +74,13 @@ newCode.onclick = function() {
 	sel.oninput = function() {
 		const blockToMimic = pieces.find(i => i.opcode == sel.value)
 		const block = document.createElement("div")
+		currentCode.push(
+			{
+				opcode: blockToMimic.opcode,
+				arguments: {}
+			}
+		)
+		const indexToEdit = currentCode.length - 1
 		const matches = blockToMimic.text.replace(/[\w\s]+|<([\w\s]+)>/gi, function(match, multiple) {
 			let input
 			if (multiple) {
@@ -116,7 +123,7 @@ newCode.onclick = function() {
 						const inp = document.createElement("div")
 						inp.style = "background-color: AAAAAA; border-radius: 6px; display: inline"
 						block.appendChild(inp)
-						input = inp
+						input = {value: null}
 				}
 			} else {
 				const text = document.createElement("a")
@@ -125,7 +132,7 @@ newCode.onclick = function() {
 				input = null
 			}
 			if (input !== null) {
-				
+				currentCode[indexToEdit].arguments[multiple] = input.value
 			}
 		})
 		sel.remove()
