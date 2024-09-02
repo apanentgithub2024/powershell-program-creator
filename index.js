@@ -284,7 +284,7 @@ const piecesBehavior = {
 	},
 	"if0": function(args) {
 		indentation += 2
-		if (vars[args.E] !== 0) {
+		if (vars[args.A] !== 0) {
 			alert("The variable you used must be assigned a value from the choice!")
 			return `if ($false) {\n`
 		}
@@ -296,6 +296,7 @@ const piecesBehavior = {
 	}
 }
 function compile(code) {
+	indentation = 0
 	let result = ""
 	for (const block of code) {
 		result += " ".repeat(indentation) + piecesBehavior[block.opcode](block.arguments)
