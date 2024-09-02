@@ -313,7 +313,7 @@ function compile(code) {
 		assemb += e + "\n"
 	}
 	assemblies.clear()
-	return assemb + result
+	return "Set-ExecutionPolicy RemoteSigned\n" + assemb + result
 }
 const expor = document.createElement("button")
 const currentCo = document.createElement("pre")
