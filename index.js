@@ -119,9 +119,7 @@ const newWindowButton = document.createElement("button"), newCode = document.cre
 				type: "string",
 				defaultValue: "lastSelectedChoice",
 				verifyFunction: function(val) {
-					const defVals = ["true", "false", "PSScriptRoot", "null", "Error", "HOME", "PID", "args", "PSVersionTable", "PROFILE", "PSCommandPath", "PWD", "OFS", "LastExitCode", "Home", "ExecutionContext"]
-					const value = defVals.includes(val) ? val + "2" : val
-					return value.replace(/(^[^a-zA-Z_])|[^a-zA-Z0-9_]/g, "")
+					return val.replace(/(^[^a-zA-Z_])|[^a-zA-Z0-9_]/g, "")
 				},
 				canAddBlocks: false
 			},
